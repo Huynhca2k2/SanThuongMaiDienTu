@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "194874980813",
+    "project_id": "app-shoping-23896",
+    "storage_bucket": "app-shoping-23896.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194874980813:android:0c6268d19f26741e462c84",
+        "android_client_info": {
+          "package_name": "com.chh.shoponline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBksrL9ltoA7e8AKTq4KO-ZRXEncC21LQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
