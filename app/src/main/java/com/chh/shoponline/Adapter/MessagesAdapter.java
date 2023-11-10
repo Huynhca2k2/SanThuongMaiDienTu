@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,17 +47,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MyViewHolder holder, int position) {
         MessagesList list2 = messagesLists.get(position);
-        Glide.with(this.context).load(list2.getProfilePic()).error(R.drawable.img_default).into(holder.profilePic);
+        Glide.with(this.context).load(list2.getPicUrl()).error(R.drawable.img_default).into(holder.profilePic);
 
         holder.name.setText(list2.getName());
-        holder.lastMessage.setText(list2.getLastMessage());
+        holder.lastMessage.setText(list2.getLast_msg());
 
-        if(list2.getUnseenMessages() == 0){
+        if(list2.getUn_seen_msg() == 0){
             holder.unseenMessages.setVisibility(View.GONE);
             holder.lastMessage.setTextColor(Color.parseColor("#959595"));
         }else {
             holder.unseenMessages.setVisibility(View.VISIBLE);
-            holder.unseenMessages.setText(list2.getUnseenMessages() + "");
+            holder.unseenMessages.setText(list2.getUn_seen_msg() + "");
             holder.lastMessage.setTextColor(context.getResources().getColor(R.color.theme_color_80));
         }
 
@@ -66,13 +65,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
             Intent intent = new Intent(context, ChatActivity.class);
             intent.putExtra("id_user", list2.getIdUser());
             intent.putExtra("name", list2.getName());
-            intent.putExtra("picUrl", list2.getProfilePic());
-            intent.putExtra("id_chat", list2.getChatKey());
-            System.out.println("message time chat " + list2.getTimeChat());
-            intent.putExtra("time_chat", list2.getTimeChat());
+            intent.putExtra("picUrl", list2.getPicUrl());
+            intent.putExtra("id_chat", list2.getId_chat());
+            intent.putExtra("time_chat", list2.getTime_chat());
 
             //set lai thoi gian xem tin nhan moi nhat
-            setTimeLast(list2.getChatKey(), list2.getIdUser());
+            setTimeLast(list2.getId_chat(), list2.getIdUser());
             //set 0 lai cho so tin nhan chua doc khi click vao message
             setUnSeenMsgMy(list2.getIdUser());
 

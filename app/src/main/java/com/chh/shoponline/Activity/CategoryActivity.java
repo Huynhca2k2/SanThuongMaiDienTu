@@ -4,16 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chh.shoponline.Adapter.PopularListAdapter2;
 import com.chh.shoponline.Domain.Category;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
 
@@ -29,7 +26,7 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterPupolar2;
     private RecyclerView recyclerViewPupolar2;
     private FirebaseManager firebase = new FirebaseManager();
-    private ArrayList<PopularDomain> productOfCate = new ArrayList<>();
+    private ArrayList<Product> productOfCate = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +61,12 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void getListProductFromFirebase(){
-        firebase.addObserver(new Observer<ArrayList<PopularDomain>>() {
+        firebase.addObserver(new Observer<ArrayList<Product>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(ArrayList<PopularDomain> productList) {
+            public void onNext(ArrayList<Product> productList) {
 
                 for(int i = 0; i< productList.size(); i++){
                     System.out.println("id cart " + productList.get(i).getCart_id());

@@ -1,7 +1,6 @@
 package com.chh.shoponline.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.chh.shoponline.Activity.DetailActivity;
-import com.chh.shoponline.Domain.PopularDomain;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.R;
 

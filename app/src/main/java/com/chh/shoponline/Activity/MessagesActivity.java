@@ -5,17 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Adapter.MessagesAdapter;
 import com.chh.shoponline.Domain.MessagesList;
-import com.chh.shoponline.Domain.PopularDomain;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MessagesActivity extends AppCompatActivity {
     private CircleImageView userProfilePic;

@@ -90,7 +90,8 @@ public class ChatActivity extends AppCompatActivity {
         nameTv.setText(getName);
         Glide.with(this).load(getPicUrl).error(R.drawable.img_default).into(profilePic);
 
-        sendBtn.setOnClickListener(view -> {sendChat();
+        sendBtn.setOnClickListener(view -> {
+            sendChat();
             //clear edit text
             messageEdt.setText("");
         });
@@ -130,25 +131,21 @@ public class ChatActivity extends AppCompatActivity {
     private void sendChat() {
 
         String getTxtMessage = messageEdt.getText().toString();
-        //get current timestamps
-        String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+        if (!getTxtMessage.isEmpty()) {
+            //get current timestamps
+            String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("chats/" + id_chat +"/messages/" + currentTimestamp);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
-                myRef.child("id_user").setValue(MainActivity.getMyUser().getId());
-                myRef.child("msg").setValue(getTxtMessage);
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("chats/" + id_chat + "/messages/" + currentTimestamp);
 
-                setTimeLast(id_chat, getIdUser);
-                setLastMessages(id_chat, getIdUser);
-                setUnSeenMsg(id_chat, getIdUser);
-            }
-            @Override
-            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
-            }
-        });
+            myRef.child("id_user").setValue(MainActivity.getMyUser().getId());
+            myRef.child("msg").setValue(getTxtMessage);
+
+            setTimeLast(id_chat, getIdUser);
+            setLastMessages(id_chat, getIdUser);
+            setUnSeenMsg(id_chat, getIdUser);
+        }else
+            Toast.makeText(this, "Enter messages!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -157,7 +154,8 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("chats/" + id_chat +"/messages");
         DatabaseReference myRef1 = database.getReference("users/" + idUser.trim() + "/messages/ " + MainActivity.getMyUser().getId());
-        DatabaseReference myRef2 = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/" + idUser);
+        DatabaseReference myRef2 = database.getReference("users/" + MainActivity.getMyUser().getId().trim() + "/messages/ " + idUser.trim());
+        System.out.println("users/" + MainActivity.getMyUser().getId().trim() + "/messages/ " + idUser.trim() + "day la set last mess");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
@@ -221,7 +219,8 @@ public class ChatActivity extends AppCompatActivity {
     private void setTimeLast(Long id_chat, String idUser){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("chats/" + id_chat +"/messages");
-        DatabaseReference myRef2 = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/" + idUser);
+        DatabaseReference myRef2 = database.getReference("users/" + MainActivity.getMyUser().getId().trim() + "/messages/ " + idUser.trim());
+        System.out.println("users/" + MainActivity.getMyUser().getId().trim() + "/messages/ " + idUser.trim() + "day la set time last");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {

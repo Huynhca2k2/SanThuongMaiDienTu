@@ -1,33 +1,42 @@
 package com.chh.shoponline.Domain;
 
 public class MessagesList {
-    private String name, idUser, lastMessage, profilePic;
-    private Long chatKey, timeChat;
-    private int unseenMessages;
+    private String name, idUser, last_msg, picUrl;
+    private Long id_chat, time_chat;
+    private int un_seen_msg;
 
-    public MessagesList(String name, String idUser, String lastMessage, String profilePic, int unseenMessages, Long chatKey, Long timeChat) {
+    public MessagesList(Long id_chat, String last_msg, String name, String picUrl, Long time_chat, int un_seen_msg){
+        this.id_chat = id_chat;
+        this.last_msg = last_msg;
+        this.name = name;
+        this.picUrl = picUrl;
+        this.time_chat = time_chat;
+        this.un_seen_msg = un_seen_msg;
+    }
+
+    public MessagesList(String name, String idUser, String last_msg, String picUrl, int un_seen_msg, Long id_chat, Long time_chat) {
         this.name = name;
         this.idUser = idUser;
-        this.lastMessage = lastMessage;
-        this.profilePic = profilePic;
-        this.unseenMessages = unseenMessages;
-        this.chatKey = chatKey;
-        this.timeChat = timeChat;
+        this.last_msg = last_msg;
+        this.picUrl = picUrl;
+        this.un_seen_msg = un_seen_msg;
+        this.id_chat = id_chat;
+        this.time_chat = time_chat;
     }
 
-    public Long getChatKey() {
-        return chatKey;
+    public Long getId_chat() {
+        return id_chat;
     }
 
-    public void setChatKey(Long chatKey) {
-        this.chatKey = chatKey;
+    public void setId_chat(Long id_chat) {
+        this.id_chat = id_chat;
     }
 
-    public String getProfilePic() {
-        return profilePic;
+    public String getPicUrl() {
+        return picUrl;
     }
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public String getName() {
@@ -46,28 +55,28 @@ public class MessagesList {
         this.idUser = mobile;
     }
 
-    public String getLastMessage() {
-        return lastMessage;
+    public String getLast_msg() {
+        return last_msg;
     }
 
-    public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
+    public void setLast_msg(String last_msg) {
+        this.last_msg = last_msg;
     }
 
-    public int getUnseenMessages() {
-        return unseenMessages;
+    public int getUn_seen_msg() {
+        return un_seen_msg;
     }
 
-    public void setUnseenMessages(int unseenMessages) {
-        this.unseenMessages = unseenMessages;
+    public void setUn_seen_msg(int un_seen_msg) {
+        this.un_seen_msg = un_seen_msg;
     }
 
-    public Long getTimeChat() {
-        return timeChat;
+    public Long getTime_chat() {
+        return time_chat;
     }
 
-    public void setTimeChat(Long timeChat) {
-        this.timeChat = timeChat;
+    public void setTime_chat(Long time_chat) {
+        this.time_chat = time_chat;
     }
 
 }

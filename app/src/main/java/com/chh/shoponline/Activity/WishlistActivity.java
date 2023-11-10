@@ -6,26 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.chh.shoponline.Adapter.PopularListAdapter2;
 import com.chh.shoponline.Adapter.WishListAdapter;
-import com.chh.shoponline.Domain.Category;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -34,7 +24,7 @@ public class WishlistActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterPupolar2;
     private RecyclerView recyclerViewPupolar2;
     private FirebaseManager firebase = new FirebaseManager();
-    private ArrayList<PopularDomain> items = new ArrayList<>();
+    private ArrayList<Product> items = new ArrayList<>();
     private User myUser = new User();
 
     @Override
@@ -66,12 +56,12 @@ public class WishlistActivity extends AppCompatActivity {
     }
 
     private void getWishListFromFirebase(){
-        firebase.addObserver(new Observer<ArrayList<PopularDomain>>() {
+        firebase.addObserver(new Observer<ArrayList<Product>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(ArrayList<PopularDomain> productList) {
+            public void onNext(ArrayList<Product> productList) {
                 items = productList;
 
                 //cap nhat giao dien

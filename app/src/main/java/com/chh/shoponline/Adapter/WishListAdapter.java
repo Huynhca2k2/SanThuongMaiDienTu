@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Activity.DetailActivity;
-import com.chh.shoponline.Activity.MainActivity;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -26,10 +25,10 @@ import java.util.ArrayList;
 
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.Viewholder> {
 
-    ArrayList<PopularDomain> items;
+    ArrayList<Product> items;
     Context context;
 
-    public WishListAdapter(ArrayList<PopularDomain> items) {
+    public WishListAdapter(ArrayList<Product> items) {
         this.items = items;
     }
 

@@ -1,7 +1,5 @@
 package com.chh.shoponline.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,27 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chh.shoponline.Adapter.CartListAdapter;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -41,7 +30,7 @@ public class CartActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private ImageView backBtn;
     private static int numCart = 0;
-    private ArrayList<PopularDomain> items = new ArrayList<>();
+    private ArrayList<Product> items = new ArrayList<>();
     private FirebaseManager firebase = new FirebaseManager();
 
     @SuppressLint("CheckResult")
@@ -110,12 +99,12 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getListCartFromFirebase(){
-        firebase.addObserver(new Observer<ArrayList<PopularDomain>>() {
+        firebase.addObserver(new Observer<ArrayList<Product>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(ArrayList<PopularDomain> productList) {
+            public void onNext(ArrayList<Product> productList) {
                 // lay list product
                 items = productList;
                 initList();

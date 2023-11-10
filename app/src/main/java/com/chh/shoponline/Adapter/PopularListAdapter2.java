@@ -2,7 +2,6 @@ package com.chh.shoponline.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Activity.DetailActivity;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.R;
 
 import java.util.ArrayList;
 
 public class PopularListAdapter2 extends RecyclerView.Adapter<PopularListAdapter2.Viewholder> {
 
-    ArrayList<PopularDomain> items;
+    ArrayList<Product> items;
     Context context;
 
-    public PopularListAdapter2(ArrayList<PopularDomain> items) {
+    public PopularListAdapter2(ArrayList<Product> items) {
         this.items = items;
     }
 

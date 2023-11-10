@@ -1,14 +1,10 @@
 package com.chh.shoponline.Domain;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
-public class PopularDomain implements Serializable{
+public class Product implements Serializable{
     private int id;
-    private String idUser;
+    private User user;
     private String title;
     private String description;
     private String picUrl;
@@ -20,33 +16,9 @@ public class PopularDomain implements Serializable{
     private int cate;
     private int cart_id;
 
-    public int getCart_id() {
-        return cart_id;
+    public Product(){
     }
-
-    public void setCart_id(int cart_id) {
-        this.cart_id = cart_id;
-    }
-
-    public int getCate() {
-        return cate;
-    }
-
-    public void setCate(int cate) {
-        this.cate = cate;
-    }
-
-    public boolean isSelect() {
-        return isSelect;
-    }
-
-    public void setSelect(boolean select) {
-        isSelect = select;
-    }
-
-    public PopularDomain(){
-    }
-    public PopularDomain(int id, String title, String description, String picUrl, int review, double score, double price) {
+    public Product(int id, String title, String description, String picUrl, int review, double score, double price) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -56,7 +28,7 @@ public class PopularDomain implements Serializable{
         this.price = price;
     }
 
-    public PopularDomain(int id, String title, String description, String picUrl, int review, double score, double price, int cate, String idUser) {
+    public Product(int id, String title, String description, String picUrl, int review, double score, double price, int cate, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -65,7 +37,7 @@ public class PopularDomain implements Serializable{
         this.score = score;
         this.price = price;
         this.cate = cate;
-        this.idUser = idUser;
+        this.user = user;
     }
 
     public int getId() {
@@ -131,12 +103,31 @@ public class PopularDomain implements Serializable{
         this.quantity = quantity;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public User getUser() {return user;}
+
+    public void setUser(User user) {this.user = user;}
+
+    public int getCart_id() {
+        return cart_id;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setCart_id(int cart_id) {
+        this.cart_id = cart_id;
     }
 
+    public int getCate() {
+        return cate;
+    }
+
+    public void setCate(int cate) {
+        this.cate = cate;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 }

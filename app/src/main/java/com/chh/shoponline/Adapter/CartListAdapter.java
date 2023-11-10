@@ -1,8 +1,5 @@
 package com.chh.shoponline.Adapter;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.chh.shoponline.Activity.LoginActivity;
-import com.chh.shoponline.Activity.MainActivity;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -26,9 +20,9 @@ import java.util.ArrayList;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHolder> {
 
-    ArrayList<PopularDomain> listItemSelected;
+    ArrayList<Product> listItemSelected;
 
-    public CartListAdapter(ArrayList<PopularDomain> listItemSelected) {
+    public CartListAdapter(ArrayList<Product> listItemSelected) {
         this.listItemSelected = listItemSelected;
     }
 

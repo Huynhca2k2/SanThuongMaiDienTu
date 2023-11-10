@@ -73,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String uid = user.getUid();
 
                 gmailTxt.setText(email);
-                Glide.with(ProfileActivity.this).load(photoUrl).error(R.drawable.img_default).into(imageAvatar);
+                Glide.with(getApplicationContext()).load(photoUrl).error(R.drawable.img_default).into(imageAvatar);
                 myUid = uid;
             if(myUser.getName().isEmpty()){
                     nameTxt.setVisibility(View.GONE);

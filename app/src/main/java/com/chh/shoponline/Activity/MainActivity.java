@@ -24,12 +24,11 @@ import com.chh.shoponline.Adapter.PopularListAdapter;
 import com.chh.shoponline.Adapter.PopularListAdapter2;
 import com.chh.shoponline.Domain.Category;
 import com.chh.shoponline.Domain.Photo;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
 import com.chh.shoponline.Adapter.PhotoViewPagerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView scrollMain;
     private CoordinatorLayout coordinatorLayout;
     private FirebaseManager firebase = new FirebaseManager();
-    private ArrayList<PopularDomain> items = new ArrayList<>();
+    private ArrayList<Product> items = new ArrayList<>();
     private static User myUser = new User();
 
     @SuppressLint("CheckResult")
@@ -218,12 +217,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getListProductFromFirebase(){
-        firebase.addObserver(new Observer<ArrayList<PopularDomain>>() {
+        firebase.addObserver(new Observer<ArrayList<Product>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(ArrayList<PopularDomain> productList) {
+            public void onNext(ArrayList<Product> productList) {
                 // lay list product
                 items = productList;
 

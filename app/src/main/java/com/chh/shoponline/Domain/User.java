@@ -13,19 +13,17 @@ public class User implements Serializable {
     private int numCart = 0;
     private String picUrl;
 
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
     public User(){
     }
 
-    public User(String id_chat, String name, String picUrl){
-        this.id_chat = id_chat;
+//    public User(String id_chat, String name, String picUrl){
+//        this.id_chat = id_chat;
+//        this.name = name;
+//        this.picUrl = picUrl;
+//    }
+
+    public User(String id, String name, String picUrl){
+        this.id = id;
         this.name = name;
         this.picUrl = picUrl;
     }
@@ -45,6 +43,14 @@ public class User implements Serializable {
 
     public void setId_chat(String id_chat) {
         this.id_chat = id_chat;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public String getId() {

@@ -2,10 +2,10 @@ package com.chh.shoponline.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +41,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Adapter.PopularListAdapter2;
 import com.chh.shoponline.Adapter.ReviewListAdapter;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.MessagesList;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
@@ -54,20 +57,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -76,16 +76,19 @@ public class DetailActivity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 10;
     private RecyclerView.Adapter adapterReview, adapterProduct;
     private RecyclerView recyclerViewReview, recyclerViewProduct , view11;
-    private LinearLayout layoutReview;
+    private CircleImageView picShop;
+    private TextView nameShop;
+    private LinearLayout layoutReview, linearShopOwner;
+    private RelativeLayout relativeShopOwner;
     private Button addToCartBtn, btnSendReview;
     private TextView titleTxt, feeTxt, descriptionTxt, reviewTxt, scoreTxt, seeAllReview;
     private EditText reviewEdt, scoreEdt;
     private ImageView picItem, backBtn, btnLike, imageUpload, cancelButton, chatBtn;
-    private PopularDomain object;
+    private Product object;
     private int numberOrder = 1;
     private User myUser = MainActivity.getMyUser();
     private FirebaseManager firebase = new FirebaseManager();
-    private ArrayList<PopularDomain> productList = new ArrayList<>();
+    private ArrayList<Product> productList = new ArrayList<>();
     private ArrayList<Review> reviewList = new ArrayList<>();
     private Review review = new Review();
     private String currentTimestamp;
@@ -127,13 +130,12 @@ public class DetailActivity extends AppCompatActivity {
         initRecyclerviewReview();
         initRecyclerview2();
         getListProductFromFirebase();
-        getUser();
         getListReviewFromFirebase();
 
     }
 
     private void getBundle(){
-        object = (PopularDomain) getIntent().getSerializableExtra("object");
+        object = (Product) getIntent().getSerializableExtra("object");
 
         Glide.with(this).load(object.getPicUrl()).error(R.drawable.pic1).into(picItem);
         titleTxt.setText(object.getTitle());
@@ -141,6 +143,14 @@ public class DetailActivity extends AppCompatActivity {
         descriptionTxt.setText(object.getDescription());
         reviewTxt.setText(object.getReview() + "");
         scoreTxt.setText(object.getScore() + "");
+
+        if (object.getUser() == null){
+            linearShopOwner.setVisibility(View.GONE);
+            relativeShopOwner.setVisibility(View.GONE);
+        }else {
+            Glide.with(this).load(object.getUser().getPicUrl()).error(R.drawable.img_default).into(picShop);
+            nameShop.setText(object.getUser().getName());
+        }
 
         addToCartBtn.setOnClickListener(view -> {
             //neu chua dang nhap khi mua thi chuyen sang login
@@ -196,42 +206,83 @@ public class DetailActivity extends AppCompatActivity {
         layoutReview.setOnClickListener(view -> showBottomDialog());
 
         chatBtn.setOnClickListener(view -> {
-            createChatBox();
+            isCreateChatBox();
 
         });
     }
 
     private void createChatBox(){
-        String shopId = object.getIdUser();
+
+        String shopId = object.getUser().getId();
+        String shopName = object.getUser().getName();
+        String shopPicUrl = object.getUser().getPicUrl();
         Long timeChat = 0L;
-        shopId = " X1T9mPKs7ISh4AW1Xw5BJvjk3792";
         int unSeen = 0;
         currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         //tao chat box cho minh
-        DatabaseReference myRef = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/" + shopId);
-        System.out.println("users/" + MainActivity.getMyUser().getId() + "/messages/" + shopId);
-        myRef.child("id_chat").setValue(Long.parseLong(currentTimestamp));
-        myRef.child("last_msg").setValue("");
-        myRef.child("name").setValue("shop demo");
-        myRef.child("picUrl").setValue("hinh shop");
-        myRef.child("time_chat").setValue(timeChat);
-        myRef.child("un_seen_msg").setValue(unSeen);
+        DatabaseReference myRef = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/");
+        myRef.child(" "+ shopId.trim())
+                .setValue(new MessagesList(Long.parseLong(currentTimestamp), "", shopName, shopPicUrl, timeChat, unSeen));
 
-        //tao chat bot cho shop
-        DatabaseReference shopRef = database.getReference("users/" + shopId.trim() + "/messages/ " + MainActivity.getMyUser().getId());
-        System.out.println("users/" + shopId.trim() + "/messages/ " + MainActivity.getMyUser().getId());
-        shopRef.child("id_chat").setValue(Long.parseLong(currentTimestamp));
-        shopRef.child("last_msg").setValue("");
-        shopRef.child("name").setValue("sinh tien");
-        shopRef.child("picUrl").setValue("hinh 1");
-        shopRef.child("time_chat").setValue(timeChat);
-        shopRef.child("un_seen_msg").setValue(unSeen);
+        //tao chat box cho shop
+        DatabaseReference shopRef = database.getReference("users/" + shopId.trim() + "/messages/");
+        shopRef.child(" "+ MainActivity.getMyUser().getId().trim())
+                .setValue(new MessagesList(Long.parseLong(currentTimestamp), "", MainActivity.getMyUser().getName(), MainActivity.getMyUser().getPicUrl(), timeChat, unSeen));
 
-        Intent intent = new Intent(DetailActivity.this, MessagesActivity.class);
+        String shoplinkcu = "tao cho shop:--" + "users/" + shopId.trim() + "/messages/" + " "+ MainActivity.getMyUser().getId().trim();
+        System.out.println(shoplinkcu);
 
+        //chuyen sang hop thoai  chat box
+        Intent intent = new Intent(DetailActivity.this, ChatActivity.class);
+        intent.putExtra("id_user", shopId);
+        intent.putExtra("name", shopName);
+        intent.putExtra("picUrl", shopPicUrl);
+
+        intent.putExtra("id_chat", Long.parseLong(currentTimestamp));
         startActivity(intent);
+    }
+
+    private void isCreateChatBox(){
+        String shopId = object.getUser().getId();
+        String shopName = object.getUser().getName();
+        String shopPicUrl = object.getUser().getPicUrl();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef1 = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/");
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean isCreate = true;
+                Long idChat = 0L;
+                for(DataSnapshot chatDataSnapshot : snapshot.getChildren()){
+
+                    if (chatDataSnapshot.getKey().trim().equals(shopId.trim())){
+
+                        isCreate = false;
+                        idChat = chatDataSnapshot.child("id_chat").getValue(Long.class);
+
+                        Intent intent = new Intent(DetailActivity.this, ChatActivity.class);
+                        intent.putExtra("id_user", shopId);
+                        intent.putExtra("name", shopName);
+                        intent.putExtra("picUrl", shopPicUrl);
+                        intent.putExtra("id_chat", idChat);
+
+                        startActivity(intent);
+                        break;
+                    }
+                }
+
+                if(isCreate){
+                    createChatBox();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initRecyclerviewReview() {
@@ -279,6 +330,10 @@ public class DetailActivity extends AppCompatActivity {
         seeAllReview = findViewById(R.id.seeAllReview);
         view11 = findViewById(R.id.view11);
         chatBtn = findViewById(R.id.chatBtn);
+        picShop = findViewById(R.id.picShop);
+        nameShop = findViewById(R.id.nameShop);
+        linearShopOwner = findViewById(R.id.linnerShopOwner);
+        relativeShopOwner = findViewById(R.id.relativeShopOwner);
     }
 
     private void nextActivity() {
@@ -291,12 +346,12 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getListProductFromFirebase(){
-        firebase.addObserver(new Observer<ArrayList<PopularDomain>>() {
+        firebase.addObserver(new Observer<ArrayList<Product>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(ArrayList<PopularDomain> items) {
+            public void onNext(ArrayList<Product> items) {
                 // lay list product
                 productList = items;
 
@@ -357,36 +412,7 @@ public class DetailActivity extends AppCompatActivity {
         firebase.fetchReviewListFromFirebase(object.getId()).subscribe();
     }
 
-    private void getUser(){
-        firebase.addUserObserver(new Observer<User>() {
-            @Override
-            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@io.reactivex.rxjava3.annotations.NonNull User user) {
-                myUser.setName(user.getName());
-                myUser.setId(user.getId());
-                myUser.setPicUrl(user.getPicUrl());
-
-            }
-
-            @Override
-            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-        firebase.fetchCurrentUserFromFirebase().subscribe();
-    }
-
     private void showBottomDialog() {
-
         final Dialog dialog = new Dialog(this);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -462,9 +488,22 @@ public class DetailActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
+        // Khởi tạo AlertDialog.Builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setMessage("Loading...");
+
+        // Khởi tạo ProgressBar
+        ProgressBar progressBar = new ProgressBar(this);
+        alertDialogBuilder.setView(progressBar);
+
+        // Tạo AlertDialog từ AlertDialog.Builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    System.out.println("down load suscess");
+                    //show dialog
+                    alertDialog.show();
                     // Upload thành công
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         review.setPicUrl(uri.toString());
@@ -481,8 +520,9 @@ public class DetailActivity extends AppCompatActivity {
                         myRef.child(pathObject).setValue(review, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                Toast.makeText(DetailActivity.this, "Comment suscess!!!",
-                                        Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                                //dialog.dismiss();
+                                cancelButton.callOnClick();
                             }
                         });
                     });

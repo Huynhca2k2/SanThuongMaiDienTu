@@ -195,6 +195,88 @@ bạn nào chân dày dặn to thì đặt chuẩn size nhé đủ 2 màu đen v
 🍫 Sỉ từ 5 sản phẩm bất kì. Khách lấy số lượng lớn vui lòng chat với shop hoặc liên hệ hotline 0982170895\n
 🍉 Cách đặt nhiều sản phẩm/mẫu/màu gộp 1 đơn hàng: Bạn chọn các sản phẩm cần mua/màu/mẫu -> thêm vào giỏ hàng ->  click vào giỏ hàng -> nhấn mua ngay.\n" />
 
+        <LinearLayout
+            android:id="@+id/linnerShopOwner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Shop owner"
+                android:textColor="@color/red"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeShopOwner"
+                android:layout_width="match_parent"
+                android:background="@color/grey1"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/picShop"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="24dp"
+                    android:src="@drawable/dm1" />
+
+                <LinearLayout
+                    android:id="@+id/shopowner2"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@id/picShop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/nameShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User name"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#424242"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:layout_marginTop="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:text="Online"
+                        android:textColor="#00c853"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="55dp"
+                    android:layout_height="65dp"
+                    android:layout_alignTop="@+id/profilePic2"
+                    android:layout_alignBottom="@+id/profilePic2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginBottom="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="2dp"
+                    android:src="@drawable/back_btn2" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -380,11 +462,11 @@ bạn nào chân dày dặn to thì đặt chuẩn size nhé đủ 2 màu đen v
 
                     <ImageView
                         android:id="@+id/chatBtn"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        app:srcCompat="@drawable/btn_5" />
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/message" />
 
 
                 </LinearLayout>

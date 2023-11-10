@@ -2,10 +2,8 @@ package com.chh.shoponline.Helper;
 
 import androidx.annotation.NonNull;
 
-import com.chh.shoponline.Activity.MainActivity;
 import com.chh.shoponline.Domain.ChatList;
-import com.chh.shoponline.Domain.MessagesList;
-import com.chh.shoponline.Domain.PopularDomain;
+import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,27 +32,27 @@ public class FirebaseManager {
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
     //lay danh sach product
-    private ArrayList<Observer<ArrayList<PopularDomain>>> observers = new ArrayList<>();
-    public void addObserver(Observer<ArrayList<PopularDomain>> observer) {
+    private ArrayList<Observer<ArrayList<Product>>> observers = new ArrayList<>();
+    public void addObserver(Observer<ArrayList<Product>> observer) {
         observers.add(observer);
     }
 
-    private void notifyObservers(ArrayList<PopularDomain> productList) {
-        for (Observer<ArrayList<PopularDomain>> observer : observers) {
+    private void notifyObservers(ArrayList<Product> productList) {
+        for (Observer<ArrayList<Product>> observer : observers) {
             observer.onNext(productList);
         }
     }
 
-    public Observable<ArrayList<PopularDomain>> fetchProductListFromFirebase() {
+    public Observable<ArrayList<Product>> fetchProductListFromFirebase() {
         return Observable.create(emitter -> {
             DatabaseReference myRef = database.getReference("products");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<PopularDomain> productList = new ArrayList<>();
+                    ArrayList<Product> productList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        PopularDomain popularDomain = dataSnapshot.getValue(PopularDomain.class);
-                        productList.add(popularDomain);
+                        Product product = dataSnapshot.getValue(Product.class);
+                        productList.add(product);
                     }
                     notifyObservers(productList);
                 }
@@ -68,16 +66,16 @@ public class FirebaseManager {
     }
 
     //lay list product cua cart
-    public Observable<ArrayList<PopularDomain>> fetchCartListFromFirebase() {
+    public Observable<ArrayList<Product>> fetchCartListFromFirebase() {
         return Observable.create(emitter -> {
             DatabaseReference myRef = database.getReference("users/" + auth.getUid() + "/carts");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<PopularDomain> productList = new ArrayList<>();
+                    ArrayList<Product> productList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        PopularDomain popularDomain = dataSnapshot.getValue(PopularDomain.class);
-                        productList.add(popularDomain);
+                        Product product = dataSnapshot.getValue(Product.class);
+                        productList.add(product);
                     }
                     notifyObservers(productList);
                 }
@@ -125,16 +123,16 @@ public class FirebaseManager {
     }
 
     //lay wishlist cua user
-    public Observable<ArrayList<PopularDomain>> fetchWishListFromFirebase() {
+    public Observable<ArrayList<Product>> fetchWishListFromFirebase() {
         return Observable.create(emitter -> {
             DatabaseReference myRef = database.getReference("users/" + auth.getUid() + "/wishlist");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<PopularDomain> productList = new ArrayList<>();
+                    ArrayList<Product> productList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        PopularDomain popularDomain = dataSnapshot.getValue(PopularDomain.class);
-                        productList.add(popularDomain);
+                        Product product = dataSnapshot.getValue(Product.class);
+                        productList.add(product);
                     }
                     notifyObservers(productList);
                 }
