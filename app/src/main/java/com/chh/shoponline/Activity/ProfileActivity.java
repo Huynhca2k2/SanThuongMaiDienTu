@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView imageAvatar;
     private TextView nameTxt, gmailTxt;
     private LinearLayout btnUri;
-    private String myUid;
+    private String myUid, photoUrl;
     private ConstraintLayout btnSignOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User myUser = snapshot.getValue(User.class);
+                photoUrl = myUser.getPicUrl();
+                String email = user.getEmail();
+                String uid = user.getUid();
 
+                gmailTxt.setText(email);
+                Glide.with(ProfileActivity.this).load(photoUrl).error(R.drawable.img_default).into(imageAvatar);
+                myUid = uid;
             if(myUser.getName().isEmpty()){
                     nameTxt.setVisibility(View.GONE);
                 }else{
@@ -83,12 +89,5 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        String email = user.getEmail();
-        Uri photoUrl = user.getPhotoUrl();
-        String uid = user.getUid();
-
-        gmailTxt.setText(email);
-        Glide.with(this).load(photoUrl).error(R.drawable.profile).into(imageAvatar);
-        myUid = uid;
     }
 }

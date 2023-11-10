@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class PopularDomain implements Serializable{
     private int id;
+    private String idUser;
     private String title;
     private String description;
     private String picUrl;
@@ -55,7 +56,7 @@ public class PopularDomain implements Serializable{
         this.price = price;
     }
 
-    public PopularDomain(int id, String title, String description, String picUrl, int review, double score, double price, int cate) {
+    public PopularDomain(int id, String title, String description, String picUrl, int review, double score, double price, int cate, String idUser) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -64,6 +65,7 @@ public class PopularDomain implements Serializable{
         this.score = score;
         this.price = price;
         this.cate = cate;
+        this.idUser = idUser;
     }
 
     public int getId() {
@@ -127,6 +129,14 @@ public class PopularDomain implements Serializable{
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
 }

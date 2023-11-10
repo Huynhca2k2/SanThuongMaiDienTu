@@ -2,6 +2,9 @@ package com.chh.shoponline.Helper;
 
 import androidx.annotation.NonNull;
 
+import com.chh.shoponline.Activity.MainActivity;
+import com.chh.shoponline.Domain.ChatList;
+import com.chh.shoponline.Domain.MessagesList;
 import com.chh.shoponline.Domain.PopularDomain;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
@@ -12,12 +15,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 
 public class FirebaseManager {
+
+    private String getIdUser, getName, getProfilePic;
+    private String idUserChat, message, date, time, lastMsg;
+    private Long getIdChat, getTimeChat;
+    private int unSeenMgs = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -98,7 +110,6 @@ public class FirebaseManager {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ArrayList<Review> reviewList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        System.out.println("day la id user" + dataSnapshot.getValue(Review.class).getTime());
                         Review review = dataSnapshot.getValue(Review.class);
                         reviewList.add(review);
                     }
@@ -140,7 +151,7 @@ public class FirebaseManager {
     public Observable<User> fetchCurrentUserFromFirebase() {
         return Observable.create(emitter -> {
             DatabaseReference myRef = database.getReference("users/" + auth.getUid());
-            myRef.addValueEventListener(new ValueEventListener() {
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User myUser = snapshot.getValue(User.class);
@@ -167,6 +178,56 @@ public class FirebaseManager {
         }
     }
 
+
+    //lay danh sach chat
+    private ArrayList<Observer<ArrayList<ChatList>>> ChatObservers = new ArrayList<>();
+    public void addChatObserver(Observer<ArrayList<ChatList>> cObserver) {
+        ChatObservers.add(cObserver);
+    }
+
+    private void notifyChatObservers(ArrayList<ChatList> chatLists) {
+        for (Observer<ArrayList<ChatList>> cObserver : ChatObservers) {
+            cObserver.onNext(chatLists);
+        }
+    }
+
+    public Observable<ArrayList<ChatList>> fetchChatListFromFirebase(Long idChat, String nameChat) {
+        return Observable.create(emitter -> {
+            DatabaseReference myRef = database.getReference("chats/" + idChat +"/messages/");
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<ChatList> chatLists = new ArrayList<>();
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                        String messageTimestamps = dataSnapshot.getKey();
+
+                        long timestampInSeconds = Long.parseLong(messageTimestamps);
+
+                        idUserChat = dataSnapshot.child("id_user").getValue(String.class);
+                        message = dataSnapshot.child("msg").getValue(String.class);
+
+                        getIdChat = dataSnapshot.child("id_chat").getValue(Long.class);
+
+                        Timestamp timestamp = new Timestamp(timestampInSeconds * 1000);
+                        Date date = new Date(timestamp.getTime());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+
+                        ChatList chatList = new ChatList(idUserChat, nameChat, message, simpleDateFormat.format(date), simpleTimeFormat.format(date));
+                        chatLists.add(chatList);
+                        }
+                    notifyChatObservers(chatLists);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
+    }
 
 }
 

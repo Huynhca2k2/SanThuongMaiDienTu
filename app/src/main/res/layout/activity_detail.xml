@@ -195,17 +195,6 @@ bạn nào chân dày dặn to thì đặt chuẩn size nhé đủ 2 màu đen v
 🍫 Sỉ từ 5 sản phẩm bất kì. Khách lấy số lượng lớn vui lòng chat với shop hoặc liên hệ hotline 0982170895\n
 🍉 Cách đặt nhiều sản phẩm/mẫu/màu gộp 1 đơn hàng: Bạn chọn các sản phẩm cần mua/màu/mẫu -> thêm vào giỏ hàng ->  click vào giỏ hàng -> nhấn mua ngay.\n" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/addToCartBtn"
-                android:layout_margin="16dp"
-                android:background="@drawable/red_button_background"
-                android:text="Buy Now"
-                android:textColor="@color/white"
-                style="@android:style/Widget.Button"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -297,7 +286,7 @@ bạn nào chân dày dặn to thì đặt chuẩn size nhé đủ 2 màu đen v
                 android:id="@+id/view11"
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="false"
                 android:paddingStart="8dp"
@@ -363,5 +352,65 @@ bạn nào chân dày dặn to thì đặt chuẩn size nhé đủ 2 màu đen v
                 android:layout_marginTop="8dp" />
         </LinearLayout>
     </ScrollView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/messageBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/chatBtn"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        app:srcCompat="@drawable/btn_5" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/homeBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/addToCartBtn"
+                        android:layout_margin="6dp"
+                        android:background="@drawable/red_button_background"
+                        android:text="Buy Now"
+                        android:textColor="@color/white"
+                        style="@android:style/Widget.Button"
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

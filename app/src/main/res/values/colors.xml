@@ -8,5 +8,7 @@
     <color name="purple">#6917e5</color>
     <color name="grey1">#eff0fc</color>
     <color name="theme_color">#2176ff</color>
-    <color name="theme_color_10">#142176ff</color>
+    <color name="theme_color_8">#142176ff</color>
+    <color name="theme_color_80">#cc2176ff</color>
+    <color name="light_8">#14000000</color>
 </resources>

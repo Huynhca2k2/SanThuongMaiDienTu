@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
+    private String id_chat;
     private String id;
     private String address;
     private String credit;
@@ -23,8 +24,8 @@ public class User implements Serializable {
     public User(){
     }
 
-    public User(String id, String name, String picUrl) {
-        this.id = id;
+    public User(String id_chat, String name, String picUrl){
+        this.id_chat = id_chat;
         this.name = name;
         this.picUrl = picUrl;
     }
@@ -36,6 +37,14 @@ public class User implements Serializable {
         this.name = name;
         this.role = role;
         this.picUrl = picUrl;
+    }
+
+    public String getId_chat() {
+        return id_chat;
+    }
+
+    public void setId_chat(String id_chat) {
+        this.id_chat = id_chat;
     }
 
     public String getId() {

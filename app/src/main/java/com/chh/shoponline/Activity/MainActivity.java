@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleIndicator3 mcircleIndicator3;
     private List<Photo> mListPhoto;
     private ArrayList<Category> cateLisrt = getListCate();
-    private LinearLayout homeBtn, cartBtn, profileBtn, wishlistBtn;
+    private LinearLayout homeBtn, cartBtn, profileBtn, wishlistBtn, messageBtn;
     private ImageView redImage;
     private TextView numberCart;
     private ConstraintLayout layoutLoading;
@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private FirebaseManager firebase = new FirebaseManager();
     private ArrayList<PopularDomain> items = new ArrayList<>();
-    private User myUser = new User();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
+    private static User myUser = new User();
 
     @SuppressLint("CheckResult")
     @Override
@@ -105,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         scrollMain = findViewById(R.id.scrollMain);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         wishlistBtn = findViewById(R.id.wishlistBtn);
+        messageBtn = findViewById(R.id.messageBtn);
     }
 
     private List<Photo> getListPhoto() {
@@ -143,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         profileBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, ProfileActivity.class)));
-        wishlistBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, ChatActivity.class)));
+        wishlistBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, WishlistActivity.class)));
+        messageBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, MessagesActivity.class)));
     }
 
     private void initRecyclerviewPhoto(){
@@ -247,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         firebase.fetchProductListFromFirebase().subscribe();
     }
 
-    public User getMyUser(){
+    public static User getMyUser(){
         return myUser;
     }
 }

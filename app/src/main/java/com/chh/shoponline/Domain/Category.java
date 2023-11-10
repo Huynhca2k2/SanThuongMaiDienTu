@@ -23,15 +23,15 @@ public class Category implements Serializable {
         this.nameCate = nameCate;
     }
 
-    public Category(){
-    }
-
     public int getIdRes() {
         return idRes;
     }
 
     public void setIdRes(int idRes) {
         this.idRes = idRes;
+    }
+
+    public Category(){
     }
 
     public Category(int id, String nameCate, int idRes) {

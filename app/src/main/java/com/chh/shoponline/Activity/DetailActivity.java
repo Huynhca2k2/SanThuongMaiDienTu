@@ -44,10 +44,6 @@ import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,8 +59,12 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -80,14 +80,15 @@ public class DetailActivity extends AppCompatActivity {
     private Button addToCartBtn, btnSendReview;
     private TextView titleTxt, feeTxt, descriptionTxt, reviewTxt, scoreTxt, seeAllReview;
     private EditText reviewEdt, scoreEdt;
-    private ImageView picItem, backBtn, btnLike, imageUpload, cancelButton;
+    private ImageView picItem, backBtn, btnLike, imageUpload, cancelButton, chatBtn;
     private PopularDomain object;
     private int numberOrder = 1;
-    private User myUser = new User("", "", "");
+    private User myUser = MainActivity.getMyUser();
     private FirebaseManager firebase = new FirebaseManager();
     private ArrayList<PopularDomain> productList = new ArrayList<>();
     private ArrayList<Review> reviewList = new ArrayList<>();
     private Review review = new Review();
+    private String currentTimestamp;
     private Uri selectedImage;
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -192,13 +193,45 @@ public class DetailActivity extends AppCompatActivity {
 
         backBtn.setOnClickListener(view -> startActivity(new Intent(DetailActivity.this, MainActivity.class)));
 
-        layoutReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBottomDialog();
-            }
-        });
+        layoutReview.setOnClickListener(view -> showBottomDialog());
 
+        chatBtn.setOnClickListener(view -> {
+            createChatBox();
+
+        });
+    }
+
+    private void createChatBox(){
+        String shopId = object.getIdUser();
+        Long timeChat = 0L;
+        shopId = " X1T9mPKs7ISh4AW1Xw5BJvjk3792";
+        int unSeen = 0;
+        currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //tao chat box cho minh
+        DatabaseReference myRef = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/" + shopId);
+        System.out.println("users/" + MainActivity.getMyUser().getId() + "/messages/" + shopId);
+        myRef.child("id_chat").setValue(Long.parseLong(currentTimestamp));
+        myRef.child("last_msg").setValue("");
+        myRef.child("name").setValue("shop demo");
+        myRef.child("picUrl").setValue("hinh shop");
+        myRef.child("time_chat").setValue(timeChat);
+        myRef.child("un_seen_msg").setValue(unSeen);
+
+        //tao chat bot cho shop
+        DatabaseReference shopRef = database.getReference("users/" + shopId.trim() + "/messages/ " + MainActivity.getMyUser().getId());
+        System.out.println("users/" + shopId.trim() + "/messages/ " + MainActivity.getMyUser().getId());
+        shopRef.child("id_chat").setValue(Long.parseLong(currentTimestamp));
+        shopRef.child("last_msg").setValue("");
+        shopRef.child("name").setValue("sinh tien");
+        shopRef.child("picUrl").setValue("hinh 1");
+        shopRef.child("time_chat").setValue(timeChat);
+        shopRef.child("un_seen_msg").setValue(unSeen);
+
+        Intent intent = new Intent(DetailActivity.this, MessagesActivity.class);
+
+        startActivity(intent);
     }
 
     private void initRecyclerviewReview() {
@@ -245,6 +278,7 @@ public class DetailActivity extends AppCompatActivity {
         layoutReview = findViewById(R.id.layoutReview);
         seeAllReview = findViewById(R.id.seeAllReview);
         view11 = findViewById(R.id.view11);
+        chatBtn = findViewById(R.id.chatBtn);
     }
 
     private void nextActivity() {
@@ -420,6 +454,13 @@ public class DetailActivity extends AppCompatActivity {
 
         String imageName = "images/" + UUID.randomUUID().toString() + ".jpg";
         StorageReference imageRef = storageRef.child(imageName);
+        String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+
+        long timestampInSeconds = Long.parseLong(currentTimestamp);
+        Timestamp timestamp = new Timestamp(timestampInSeconds * 1000);
+        Date date = new Date(timestamp.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
@@ -427,10 +468,10 @@ public class DetailActivity extends AppCompatActivity {
                     // Upload thành công
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         review.setPicUrl(uri.toString());
-                        review.setId(3);
+                        review.setId(Integer.parseInt(currentTimestamp));
                         review.setContent(reviewEdt.getText().toString().trim());
                         review.setScore(Integer.parseInt(String.valueOf(scoreEdt.getText())));
-                        review.setTime("9:9 9/9/2023");
+                        review.setTime(simpleDateFormat.format(date) + " " + simpleTimeFormat.format(date));
                         review.setUser(myUser);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
