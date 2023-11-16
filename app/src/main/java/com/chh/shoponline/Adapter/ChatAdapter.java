@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chh.shoponline.Activity.MainActivity;
 import com.chh.shoponline.R;
-import com.chh.shoponline.Domain.ChatList;
+import com.chh.shoponline.Domain.Chat;
 
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
 
-    private List<ChatList> chatLists;
+    private List<Chat> chats;
     private final Context context;
     private String idMyUser = MainActivity.getMyUser().getId();
 
-    public ChatAdapter(List<ChatList> chatLists, Context context) {
-        this.chatLists = chatLists;
+    public ChatAdapter(List<Chat> chats, Context context) {
+        this.chats = chats;
         this.context = context;
     }
 
@@ -35,7 +35,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        ChatList list2 = chatLists.get(position);
+        Chat list2 = chats.get(position);
 
         if(list2.getIdUser().trim().equals(idMyUser.trim())){
             holder.myLayout.setVisibility(View.VISIBLE);
@@ -54,7 +54,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return chatLists.size();
+        return chats.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{

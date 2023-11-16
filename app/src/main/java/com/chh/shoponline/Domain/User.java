@@ -22,10 +22,11 @@ public class User implements Serializable {
 //        this.picUrl = picUrl;
 //    }
 
-    public User(String id, String name, String picUrl){
+    public User(String id, String name, String picUrl, String address){
         this.id = id;
         this.name = name;
         this.picUrl = picUrl;
+        this.address = address;
     }
 
     public User(String id, String address, String credit, String name, String role, String picUrl) {

@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bottom_navigation() {
-        homeBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, MainActivity.class)));
+        homeBtn.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, OrderActivity.class)));
         cartBtn.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
             startActivity(intent);

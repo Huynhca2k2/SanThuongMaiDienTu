@@ -2,7 +2,7 @@ package com.chh.shoponline.Helper;
 
 import androidx.annotation.NonNull;
 
-import com.chh.shoponline.Domain.ChatList;
+import com.chh.shoponline.Domain.Chat;
 import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
@@ -178,24 +178,24 @@ public class FirebaseManager {
 
 
     //lay danh sach chat
-    private ArrayList<Observer<ArrayList<ChatList>>> ChatObservers = new ArrayList<>();
-    public void addChatObserver(Observer<ArrayList<ChatList>> cObserver) {
+    private ArrayList<Observer<ArrayList<Chat>>> ChatObservers = new ArrayList<>();
+    public void addChatObserver(Observer<ArrayList<Chat>> cObserver) {
         ChatObservers.add(cObserver);
     }
 
-    private void notifyChatObservers(ArrayList<ChatList> chatLists) {
-        for (Observer<ArrayList<ChatList>> cObserver : ChatObservers) {
-            cObserver.onNext(chatLists);
+    private void notifyChatObservers(ArrayList<Chat> chats) {
+        for (Observer<ArrayList<Chat>> cObserver : ChatObservers) {
+            cObserver.onNext(chats);
         }
     }
 
-    public Observable<ArrayList<ChatList>> fetchChatListFromFirebase(Long idChat, String nameChat) {
+    public Observable<ArrayList<Chat>> fetchChatListFromFirebase(Long idChat, String nameChat) {
         return Observable.create(emitter -> {
             DatabaseReference myRef = database.getReference("chats/" + idChat +"/messages/");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<ChatList> chatLists = new ArrayList<>();
+                    ArrayList<Chat> chats = new ArrayList<>();
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
 
@@ -213,10 +213,10 @@ public class FirebaseManager {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
-                        ChatList chatList = new ChatList(idUserChat, nameChat, message, simpleDateFormat.format(date), simpleTimeFormat.format(date));
-                        chatLists.add(chatList);
+                        Chat chat = new Chat(idUserChat, nameChat, message, simpleDateFormat.format(date), simpleTimeFormat.format(date));
+                        chats.add(chat);
                         }
-                    notifyChatObservers(chatLists);
+                    notifyChatObservers(chats);
                 }
 
                 @Override

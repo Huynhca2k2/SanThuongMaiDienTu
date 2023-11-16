@@ -1,17 +1,17 @@
 package com.chh.shoponline.Domain;
 
-public class ChatList {
+public class Chat {
     private String idUser, name, message, date, time;
 
-    public ChatList(){
+    public Chat(){
 
     }
-    public ChatList(String idUser, String message){
+    public Chat(String idUser, String message){
         this.idUser = idUser;
         this.message = message;
     }
 
-    public ChatList(String idUser, String name, String message, String date, String time) {
+    public Chat(String idUser, String name, String message, String date, String time) {
         this.idUser = idUser;
         this.name = name;
         this.message = message;

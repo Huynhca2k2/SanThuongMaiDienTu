@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Adapter.PopularListAdapter2;
 import com.chh.shoponline.Adapter.ReviewListAdapter;
-import com.chh.shoponline.Domain.MessagesList;
+import com.chh.shoponline.Domain.Messages;
 import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Domain.Review;
 import com.chh.shoponline.Domain.User;
@@ -98,7 +97,6 @@ public class DetailActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Log.e(TAG, "onActivityResult");
                     if(result.getResultCode() == Activity.RESULT_OK){
                         Intent data = result.getData();
                         if(data == null){
@@ -172,7 +170,7 @@ public class DetailActivity extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         quantityCart += 1;
                     }
-                    System.out.println("product size " + productList.size());
+
                     myRef2.setValue(quantityCart);
                 }
 
@@ -206,7 +204,10 @@ public class DetailActivity extends AppCompatActivity {
         layoutReview.setOnClickListener(view -> showBottomDialog());
 
         chatBtn.setOnClickListener(view -> {
-            isCreateChatBox();
+            if (object.getUser().getId() == null)
+                return;
+            else 
+                isCreateChatBox();
 
         });
     }
@@ -224,12 +225,12 @@ public class DetailActivity extends AppCompatActivity {
         //tao chat box cho minh
         DatabaseReference myRef = database.getReference("users/" + MainActivity.getMyUser().getId() + "/messages/");
         myRef.child(" "+ shopId.trim())
-                .setValue(new MessagesList(Long.parseLong(currentTimestamp), "", shopName, shopPicUrl, timeChat, unSeen));
+                .setValue(new Messages(Long.parseLong(currentTimestamp), "", shopName, shopPicUrl, timeChat, unSeen));
 
         //tao chat box cho shop
         DatabaseReference shopRef = database.getReference("users/" + shopId.trim() + "/messages/");
         shopRef.child(" "+ MainActivity.getMyUser().getId().trim())
-                .setValue(new MessagesList(Long.parseLong(currentTimestamp), "", MainActivity.getMyUser().getName(), MainActivity.getMyUser().getPicUrl(), timeChat, unSeen));
+                .setValue(new Messages(Long.parseLong(currentTimestamp), "", MainActivity.getMyUser().getName(), MainActivity.getMyUser().getPicUrl(), timeChat, unSeen));
 
         String shoplinkcu = "tao cho shop:--" + "users/" + shopId.trim() + "/messages/" + " "+ MainActivity.getMyUser().getId().trim();
         System.out.println(shoplinkcu);
@@ -257,7 +258,7 @@ public class DetailActivity extends AppCompatActivity {
                 Long idChat = 0L;
                 for(DataSnapshot chatDataSnapshot : snapshot.getChildren()){
 
-                    if (chatDataSnapshot.getKey().trim().equals(shopId.trim())){
+                    if (chatDataSnapshot.getKey().trim().equals(shopId.trim()) && !MainActivity.getMyUser().getId().trim().equals(shopId.trim())){
 
                         isCreate = false;
                         idChat = chatDataSnapshot.child("id_chat").getValue(Long.class);
@@ -475,18 +476,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void uploadImageToFirebase(Uri imageUri) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-
-        String imageName = "images/" + UUID.randomUUID().toString() + ".jpg";
-        StorageReference imageRef = storageRef.child(imageName);
-        String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
-
-        long timestampInSeconds = Long.parseLong(currentTimestamp);
-        Timestamp timestamp = new Timestamp(timestampInSeconds * 1000);
-        Date date = new Date(timestamp.getTime());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
         // Khởi tạo AlertDialog.Builder
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -500,10 +489,22 @@ public class DetailActivity extends AppCompatActivity {
         // Tạo AlertDialog từ AlertDialog.Builder
         AlertDialog alertDialog = alertDialogBuilder.create();
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        alertDialog.show();
+
+        String imageName = "images/" + UUID.randomUUID().toString() + ".jpg";
+        StorageReference imageRef = storageRef.child(imageName);
+        String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+
+        long timestampInSeconds = Long.parseLong(currentTimestamp);
+        Timestamp timestamp = new Timestamp(timestampInSeconds * 1000);
+        Date date = new Date(timestamp.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    //show dialog
-                    alertDialog.show();
                     // Upload thành công
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         review.setPicUrl(uri.toString());

@@ -64,5 +64,6 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
 
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation ("com.github.lecho:hellocharts-library:1.5.8@aar")
 
 }

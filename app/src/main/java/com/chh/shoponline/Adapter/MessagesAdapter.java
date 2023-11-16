@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.chh.shoponline.Activity.ChatActivity;
 import com.chh.shoponline.Activity.MainActivity;
 import com.chh.shoponline.R;
-import com.chh.shoponline.Domain.MessagesList;
+import com.chh.shoponline.Domain.Messages;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +30,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder>{
 
-    private List<MessagesList> messagesLists;
+    private List<Messages> messages;
     private final Context context;
 
-    public MessagesAdapter(List<MessagesList> messagesLists, Context context) {
-        this.messagesLists = messagesLists;
+    public MessagesAdapter(List<Messages> messages, Context context) {
+        this.messages = messages;
         this.context = context;
     }
 
@@ -46,7 +46,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MyViewHolder holder, int position) {
-        MessagesList list2 = messagesLists.get(position);
+        Messages list2 = messages.get(position);
         Glide.with(this.context).load(list2.getPicUrl()).error(R.drawable.img_default).into(holder.profilePic);
 
         holder.name.setText(list2.getName());
@@ -81,7 +81,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return messagesLists.size();
+        return messages.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -1,11 +1,9 @@
 package com.chh.shoponline.Activity;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,23 +12,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Adapter.ChatAdapter;
-import com.chh.shoponline.Domain.ChatList;
-import com.chh.shoponline.Domain.MessagesList;
+import com.chh.shoponline.Domain.Chat;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
 
-import com.chh.shoponline.Adapter.MessagesAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -43,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
     private Long id_chat, timeChat;
     private int unseenMessage;
     private RecyclerView chattingRecyclerView;
-    private List<ChatList> chats = new ArrayList<>();
+    private List<Chat> chats = new ArrayList<>();
     private ChatAdapter chatAdapter;
     private TextView nameTv;
     private String getIdUser;
@@ -100,19 +93,19 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getListChatFromFirebase(){
-        firebase.addChatObserver(new Observer<ArrayList<ChatList>>() {
+        firebase.addChatObserver(new Observer<ArrayList<Chat>>() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
             @Override
-            public void onNext(@NonNull ArrayList<ChatList> chatLists) {
+            public void onNext(@NonNull ArrayList<Chat> chats) {
                 // lay list chat
-                chats = chatLists;
+                ChatActivity.this.chats = chats;
 
                 //cap nhat giao dien
                 initRecyclerview();
                 chatAdapter.notifyDataSetChanged();
-                chattingRecyclerView.scrollToPosition(chatLists.size() - 1);
+                chattingRecyclerView.scrollToPosition(chats.size() - 1);
             }
 
             @Override

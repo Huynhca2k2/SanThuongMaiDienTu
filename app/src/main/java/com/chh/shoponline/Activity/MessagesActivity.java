@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.chh.shoponline.Adapter.MessagesAdapter;
-import com.chh.shoponline.Domain.MessagesList;
+import com.chh.shoponline.Domain.Messages;
 import com.chh.shoponline.Domain.User;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
@@ -25,7 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessagesActivity extends AppCompatActivity {
     private CircleImageView userProfilePic;
-    private List<MessagesList> messages = new ArrayList<>();
+    private List<Messages> messages = new ArrayList<>();
     private RecyclerView messagesRecyclerView;
     private MessagesAdapter messagesAdapter;
     private long getMessageKey = 0;
@@ -83,7 +83,7 @@ public class MessagesActivity extends AppCompatActivity {
                         unSeenMgs = dataSnapshot.child("un_seen_msg").getValue(Integer.class);
                         getTimeChat = dataSnapshot.child("time_chat").getValue(Long.class);
 
-                        messages.add(new MessagesList(getName, getIdUser, lastMsg, getProfilePic, unSeenMgs, getIdChat, getTimeChat));
+                        messages.add(new Messages(getName, getIdUser, lastMsg, getProfilePic, unSeenMgs, getIdChat, getTimeChat));
                     }
                     initRecyclerview();
 

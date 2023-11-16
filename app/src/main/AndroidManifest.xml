@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Shoponline"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.SalesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ShopManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.OrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.MessagesActivity"
             android:exported="false" />
         <activity

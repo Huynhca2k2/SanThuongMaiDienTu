@@ -11,4 +11,6 @@
     <color name="theme_color_8">#142176ff</color>
     <color name="theme_color_80">#cc2176ff</color>
     <color name="light_8">#14000000</color>
+    <color name="text_title_bar">#1D3599</color>
+    <color name="lavendar">#8692f7</color>
 </resources>

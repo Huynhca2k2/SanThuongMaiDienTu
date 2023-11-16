@@ -2,7 +2,9 @@ package com.chh.shoponline.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.WindowCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -27,12 +29,13 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileActivity extends AppCompatActivity {
     private ImageView imageAvatar;
     private TextView nameTxt, gmailTxt;
-    private LinearLayout btnUri;
+    private LinearLayout btnUri, btnShopManager;
     private String myUid, photoUrl;
-    private ConstraintLayout btnSignOut;
+    private AppCompatButton btnSignOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_profile);
 
         initUi();
@@ -46,15 +49,27 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
-        btnUri.setOnClickListener(view -> Toast.makeText(ProfileActivity.this,"UID : " + myUid, Toast.LENGTH_SHORT).show());
+        //btnUri.setOnClickListener(view -> Toast.makeText(ProfileActivity.this,"UID : " + myUid, Toast.LENGTH_SHORT).show());
+
+        btnShopManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(MainActivity.getMyUser().getRole().equals("shop")){
+                    startActivity(new Intent(ProfileActivity.this, ShopManagerActivity.class));
+                }else {
+                    Toast.makeText(ProfileActivity.this, "You are not logged in or you have not registered your business!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initUi() {
         imageAvatar = findViewById(R.id.imgAvatar);
-        nameTxt = findViewById(R.id.nameProTxt);
+        //nameTxt = findViewById(R.id.nameProTxt);
         gmailTxt = findViewById(R.id.gmailProTxt);
-        btnUri = findViewById(R.id.btnUid);
+        //btnUri = findViewById(R.id.btnUid);
         btnSignOut = findViewById(R.id.btnSignout);
+        btnShopManager = findViewById(R.id.btnShopManager);
     }
 
     private void showUserInformation(){
@@ -70,17 +85,12 @@ public class ProfileActivity extends AppCompatActivity {
                 User myUser = snapshot.getValue(User.class);
                 photoUrl = myUser.getPicUrl();
                 String email = user.getEmail();
-                String uid = user.getUid();
+                //String uid = user.getUid();
 
                 gmailTxt.setText(email);
                 Glide.with(getApplicationContext()).load(photoUrl).error(R.drawable.img_default).into(imageAvatar);
-                myUid = uid;
-            if(myUser.getName().isEmpty()){
-                    nameTxt.setVisibility(View.GONE);
-                }else{
-                    nameTxt.setVisibility(View.VISIBLE);
-                    nameTxt.setText("" + myUser.getName());
-                }
+//                myUid = uid;
+
             }
 
             @Override

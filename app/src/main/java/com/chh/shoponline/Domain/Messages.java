@@ -1,11 +1,11 @@
 package com.chh.shoponline.Domain;
 
-public class MessagesList {
+public class Messages {
     private String name, idUser, last_msg, picUrl;
     private Long id_chat, time_chat;
     private int un_seen_msg;
 
-    public MessagesList(Long id_chat, String last_msg, String name, String picUrl, Long time_chat, int un_seen_msg){
+    public Messages(Long id_chat, String last_msg, String name, String picUrl, Long time_chat, int un_seen_msg){
         this.id_chat = id_chat;
         this.last_msg = last_msg;
         this.name = name;
@@ -14,7 +14,7 @@ public class MessagesList {
         this.un_seen_msg = un_seen_msg;
     }
 
-    public MessagesList(String name, String idUser, String last_msg, String picUrl, int un_seen_msg, Long id_chat, Long time_chat) {
+    public Messages(String name, String idUser, String last_msg, String picUrl, int un_seen_msg, Long id_chat, Long time_chat) {
         this.name = name;
         this.idUser = idUser;
         this.last_msg = last_msg;
