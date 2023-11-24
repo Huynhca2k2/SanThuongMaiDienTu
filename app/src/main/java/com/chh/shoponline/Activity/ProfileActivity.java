@@ -51,16 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
         //btnUri.setOnClickListener(view -> Toast.makeText(ProfileActivity.this,"UID : " + myUid, Toast.LENGTH_SHORT).show());
 
-        btnShopManager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(MainActivity.getMyUser().getRole().equals("shop")){
-                    startActivity(new Intent(ProfileActivity.this, ShopManagerActivity.class));
-                }else {
-                    Toast.makeText(ProfileActivity.this, "You are not logged in or you have not registered your business!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void initUi() {

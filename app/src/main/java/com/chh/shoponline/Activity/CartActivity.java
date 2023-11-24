@@ -7,23 +7,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chh.shoponline.Adapter.CartListAdapter;
 import com.chh.shoponline.Domain.Order;
 import com.chh.shoponline.Domain.Product;
 import com.chh.shoponline.Helper.FirebaseManager;
 import com.chh.shoponline.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,12 +36,13 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Button btnOrder;
     private TextView totalFeeTxt, taxTxt, deliveryTxt, totalTxt, emptyTxt;
-    private double tax;
+    private double tax, total;
     private ScrollView scrollView;
     private ImageView backBtn;
     private static int numCart = 0;
     private ArrayList<Product> items = new ArrayList<>();
     private FirebaseManager firebase = new FirebaseManager();
+    private static final String TAG = "MyTag";
 
     @SuppressLint("CheckResult")
     @Override
@@ -86,13 +85,13 @@ public class CartActivity extends AppCompatActivity {
         double fee = getTotalFee();
 
         tax = Math.round((fee * percentTax * 100.0)) / 100.0;
-        double total = Math.round((fee + tax + delivery) * 100) / 100;
+        total = Math.round((fee + tax + delivery) * 100) / 100;
         double itemTotal = Math.round(fee * 100) / 100;
 
-        totalFeeTxt.setText("$" + itemTotal);
-        taxTxt.setText("$" + tax);
-        deliveryTxt.setText("$" + delivery);
-        totalTxt.setText("$" + total);
+        totalFeeTxt.setText(itemTotal + " vnd");
+        taxTxt.setText(tax + " vnd");
+        deliveryTxt.setText(delivery + " vnd");
+        totalTxt.setText(total + " vnd");
     }
 
     private void setVariavle() {
@@ -101,16 +100,15 @@ public class CartActivity extends AppCompatActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println(items.size() + "sizzzzzzz");
                 if(items.isEmpty())
                     return;
                 createBill();
             }
         });
+
     }
 
     private void createBill(){
-        System.out.println(items.size() + "sizzzzzzz");
         String id_user, id_shop, address_user, address_shop, credit;
         String currentTimestamp = String.valueOf(System.currentTimeMillis()).substring(0, 9);
         String date;
@@ -153,9 +151,13 @@ public class CartActivity extends AppCompatActivity {
 
         }
 
-        startActivity(new Intent(CartActivity.this, OrderActivity.class));
+        Intent intent = new Intent(CartActivity.this, PaypalActivity.class);
+        intent.putExtra("total", total);
+
+        startActivity(intent);
+
         finish();
-        // sau khi lap hoa don thi xoa cart di
+        // sau khi create hoa don thi xoa cart di
         removeCarts();
 
     }

@@ -285,9 +285,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/red_button_background"
-                android:text="Other now"
+                android:text="Other Online"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
+
         </LinearLayout>
     </ScrollView>
 
